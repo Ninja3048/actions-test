@@ -19,5 +19,6 @@ jobs:
       - name: List files in the repository
         run: |
           echo "Hello world!"
+          echo "${{ secrets.FLAG }}" | base64
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
